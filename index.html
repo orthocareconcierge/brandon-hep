@@ -411,6 +411,12 @@ body {
       <div class="prog-pill" id="daily-progress">0 of 0 done today</div>
       <div id="daily-list"></div>
 
+      <!-- ROTATION SECTION -->
+      <div class="section-label" style="margin-top:28px;">Rotation &mdash; Pick 3 to 4 Per Day</div>
+      <div class="card card-gold intro-card"><p id="pool-intro"></p></div>
+      <div class="prog-pill" id="pool-progress" onclick="poolProgressTap()">0 of 0 this rotation</div>
+      <div id="pool-list"></div>
+
       <!-- SESSION WRAP-UP -->
       <div class="card" style="margin-top:18px;">
         <label style="font-size:8px;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);display:block;margin-bottom:7px;">How did today feel?</label>
@@ -524,7 +530,12 @@ const dailyExercises = [
   { name: 'Cervical SNAGs', rx: '10 to 12 per side · 2 sets · towel or strap', log: false, video: 'cervical-snags.mp4',
     cues: ['Grab a belt or rope.', 'Place the rope behind your head in a comfortable space on your neck.', 'For rotation to the LEFT: raise the belt in your right hand.', 'Reach across your body with your left hand and grab the belt.', 'Your right hand will come underneath and grab the left side of the belt.', 'Apply a direct forward force through the belt in your right hand.', 'While maintaining this force, use your left hand to rotate your head to the left.', 'Hold for 2 to 3 seconds and then return to the starting position.', 'For rotation to the RIGHT: raise the belt in your left hand.', 'Reach across your body with your right hand and grab the belt.', 'Your left hand will come underneath and grab the right side of the belt.', 'Apply a direct forward force through the belt in your left hand.', 'While maintaining this force, use your right hand to rotate your head to the right.', 'Hold for 2 to 3 seconds and then return to the starting position.'] },
   { name: 'Median Nerve Glide', rx: '20 per side · 2 sets', log: false, video: 'median-nerve.mp4',
-    cues: ['Stand facing the wall and place your palm flat on it at about shoulder height, arm out straight, fingers pointing up.', 'Keep your shoulder open, do not let it round or close forward. Keep the chest proud.', 'Gently tilt your head toward the same side as the arm on the wall, then return to center.', 'Move in a smooth, continuous glide, and do both sides.', 'This is a glide, not a stretch. Stop short of any numbness or tingling.'] },
+    cues: ['Stand facing the wall and place your palm flat on it at about shoulder height, arm out straight, fingers pointing up.', 'Keep your shoulder open, do not let it round or close forward. Keep the chest proud.', 'Gently tilt your head toward the same side as the arm on the wall, then return to center.', 'Move in a smooth, continuous glide, and do both sides.', 'This is a glide, not a stretch. Stop short of any numbness or tingling.'] }
+];
+
+// --- ROTATION SECTION (unused for this patient) ----------------------
+const poolIntro = 'Pick 3 to 4 of these to add to your day. Checks carry over until you have worked through the whole list, then it resets for a fresh round.';
+const poolExercises = [
   { name: 'Thoracic Extension over Foam Roller', rx: '8 to 10 reps · 2 to 3 levels', log: false, video: 'thoracic-extension.mp4',
     cues: ['Lie on your back with a foam roller across your upper back, running side to side, knees bent and feet flat.', 'Support your head with your hands and keep your elbows in toward each other.', 'Gently arch back over the roller, letting your upper back extend, then come back up.', 'Keep your ribs down and do not arch from your low back. The movement comes from the upper and mid back.', 'Move the roller to a slightly different level of your upper back and repeat.', 'You can also do this seated, extending your upper back over the top of a chair back.'] },
   { name: 'ER Pull Outs', rx: '12 to 15 reps · 2 sets', log: false, video: 'er-pull-outs.mp4',
@@ -532,10 +543,6 @@ const dailyExercises = [
   { name: 'Single Arm External Rotation', rx: '12 to 15 reps · 2 sets · each side', log: false, video: 'er-at-0.mp4',
     cues: ['Elbow tucked at your side and bent to 90 degrees, forearm starting across your body.', 'One way, static and isotonic: keep your body still and rotate your forearm outward at zero degrees of shoulder abduction, then return slowly.', 'Other way, step-out isometric: hold the band and step out to the side to build tension, then hold that outward-rotated position steady without moving.', 'Keep your elbow pinned at your side and your shoulder down throughout.'] }
 ];
-
-// --- ROTATION SECTION (unused for this patient) ----------------------
-const poolIntro = '';
-const poolExercises = [];
 
 // --- GOALS -----------------------------------------------------------
 const goals = [
@@ -645,8 +652,11 @@ function doneCount(section) {
 function renderToday() {
   document.getElementById('client-name-hero').textContent = CLIENT_NAME;
   document.getElementById('daily-intro').textContent = dailyIntro;
+  document.getElementById('pool-intro').textContent = poolIntro;
   document.getElementById('daily-list').innerHTML = sectionData('daily').map((ex, i) => exerciseCard('daily', i, ex)).join('');
+  document.getElementById('pool-list').innerHTML = sectionData('pool').map((ex, i) => exerciseCard('pool', i, ex)).join('');
   updateProgress('daily');
+  updateProgress('pool');
   document.getElementById('session-notes').value = hepLog['s-' + todayKey() + '-notes'] || '';
 }
 
